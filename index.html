@@ -92,38 +92,79 @@
     </div>
 
     <script>
+        // Input validation function
+        function validateInput(input) {
+            if (input === "" || isNaN(input)) {
+                return false;
+            }
+            return true;
+        }
+
+        // Core calculation functions
+        function add(num1, num2) {
+            return num1 + num2;
+        }
+
+        function subtract(num1, num2) {
+            return num1 - num2;
+        }
+
+        function multiply(num1, num2) {
+            return num1 * num2;
+        }
+
+        function divide(num1, num2) {
+            if (num2 === 0) {
+                return "Cannot divide by zero.";
+            }
+            return num1 / num2;
+        }
+
+        // Perform selected operation
         function performOperation(operation) {
             const num1 = parseFloat(document.getElementById('num1').value);
             const num2 = parseFloat(document.getElementById('num2').value);
             let result;
 
-            if (isNaN(num1) || isNaN(num2)) {
+            // Validate inputs
+            if (!validateInput(document.getElementById('num1').value) || !validateInput(document.getElementById('num2').value)) {
                 document.getElementById('result').textContent = 'Please enter valid numbers.';
                 return;
             }
 
+            // Perform the calculation based on selected operation
             switch (operation) {
                 case 'add':
-                    result = num1 + num2;
+                    result = add(num1, num2);
                     break;
                 case 'sub':
-                    result = num1 - num2;
+                    result = subtract(num1, num2);
                     break;
                 case 'mul':
-                    result = num1 * num2;
+                    result = multiply(num1, num2);
                     break;
                 case 'div':
-                    if (num2 === 0) {
-                        document.getElementById('result').textContent = 'Cannot divide by zero.';
-                        return;
-                    }
-                    result = num1 / num2;
+                    result = divide(num1, num2);
                     break;
                 default:
                     result = 'Invalid operation';
             }
 
-            document.getElementById('result').textContent = 'Result: ' + result;
+            // Handle errors in the result
+            if (result === "Cannot divide by zero.") {
+                document.getElementById('result').textContent = result;
+            } else if (isNaN(result)) {
+                document.getElementById('result').textContent = 'Error in calculation.';
+            } else {
+                // Format result to handle decimals and display it
+                document.getElementById('result').textContent = 'Result: ' + formatResult(result);
+            }
+        }
+
+        // Function to format the result
+        function formatResult(result) {
+            // Format to 2 decimal places, if necessary
+            return result % 1 === 0 ? result : result.toFixed(2);
         }
     </script>
 </body>
