@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@
             margin: 0;
             background-color: #f0f4f8;
         }
+        
         .calculator {
             background-color: #ffffff;
             border-radius: 8px;
@@ -21,19 +23,23 @@
             padding: 2rem;
             width: 300px;
         }
+        
         h1 {
             text-align: center;
             color: #333;
             margin-bottom: 1.5rem;
         }
+        
         .input-group {
             margin-bottom: 1rem;
         }
+        
         label {
             display: block;
             margin-bottom: 0.5rem;
             color: #555;
         }
+        
         input[type="number"] {
             width: 100%;
             padding: 0.5rem;
@@ -41,12 +47,14 @@
             border-radius: 4px;
             font-size: 1rem;
         }
+        
         .button-group {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 0.5rem;
             margin-bottom: 1rem;
         }
+        
         button {
             padding: 0.5rem;
             border: none;
@@ -57,9 +65,11 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+        
         button:hover {
             background-color: #3a7bc8;
         }
+        
         #result {
             text-align: center;
             font-size: 1.5rem;
@@ -71,6 +81,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="calculator">
         <h1>Simple Calculator</h1>
@@ -87,85 +98,48 @@
             <button onclick="performOperation('sub')">Subtract</button>
             <button onclick="performOperation('mul')">Multiply</button>
             <button onclick="performOperation('div')">Divide</button>
+            <button onclick="performOperation('mod')">Modulus </button>
+            <button onclick="performOperation('expo')">Exponentiation </button>
         </div>
         <div id="result">Result: </div>
     </div>
 
     <script>
-        // Input validation function
-        function validateInput(input) {
-            if (input === "" || isNaN(input)) {
-                return false;
-            }
-            return true;
-        }
+        const num1Input = document.getElementById("num1");
+        const num2Input = document.getElementById("num2");
+        const Result = document.getElementById("result");
 
-        // Core calculation functions
-        function add(num1, num2) {
-            return num1 + num2;
-        }
-
-        function subtract(num1, num2) {
-            return num1 - num2;
-        }
-
-        function multiply(num1, num2) {
-            return num1 * num2;
-        }
-
-        function divide(num1, num2) {
-            if (num2 === 0) {
-                return "Cannot divide by zero.";
-            }
-            return num1 / num2;
-        }
-
-        // Perform selected operation
         function performOperation(operation) {
-            const num1 = parseFloat(document.getElementById('num1').value);
-            const num2 = parseFloat(document.getElementById('num2').value);
+            const num1 = parseFloat(num1Input.value);
+            const num2 = parseFloat(num2Input.value);
             let result;
 
-            // Validate inputs
-            if (!validateInput(document.getElementById('num1').value) || !validateInput(document.getElementById('num2').value)) {
-                document.getElementById('result').textContent = 'Please enter valid numbers.';
-                return;
-            }
-
-            // Perform the calculation based on selected operation
             switch (operation) {
-                case 'add':
-                    result = add(num1, num2);
+                case "add":
+                    result = num1 + num2;
                     break;
-                case 'sub':
-                    result = subtract(num1, num2);
+                case "sub":
+                    result = num1 - num2;
                     break;
-                case 'mul':
-                    result = multiply(num1, num2);
+                case "mul":
+                    result = num1 * num2;
                     break;
-                case 'div':
-                    result = divide(num1, num2);
+                case "div":
+                    result = num1 / num2;
+                    break;
+                case "mod":
+                    result = num1 % num2;
+                    break;
+                case "expo":
+                    result = Math.pow(num1, num2);
                     break;
                 default:
-                    result = 'Invalid operation';
+                    result = "Invalid Operation!";
+                    console.log("Invalid Operation!");
             }
-
-            // Handle errors in the result
-            if (result === "Cannot divide by zero.") {
-                document.getElementById('result').textContent = result;
-            } else if (isNaN(result)) {
-                document.getElementById('result').textContent = 'Error in calculation.';
-            } else {
-                // Format result to handle decimals and display it
-                document.getElementById('result').textContent = 'Result: ' + formatResult(result);
-            }
-        }
-
-        // Function to format the result
-        function formatResult(result) {
-            // Format to 2 decimal places, if necessary
-            return result % 1 === 0 ? result : result.toFixed(2);
+            Result.innerHTML = "Result: " + result;
         }
     </script>
 </body>
+
 </html>
